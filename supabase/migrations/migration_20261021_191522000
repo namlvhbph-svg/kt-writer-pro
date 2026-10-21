@@ -1,0 +1,133 @@
+-- KT Writer PRO: kho văn bản, kho bài viết, bảng nối, profiles
+
+create table public.kt_documents (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  doc_number text,
+  doc_type_id uuid references public.kt_doc_types(id) on delete set null,
+  topic_group_id uuid references public.kt_topic_groups(id) on delete set null,
+  source_id uuid references public.kt_sources(id) on delete set null,
+  issuing_body text,
+  issued_date date,
+  effective_date date,
+  expiry_date date,
+  legal_status text not null default 'khong_xac_dinh',
+  review_status text not null default 'moi',
+  original_url text,
+  raw_text text not null default '',
+  char_count integer not null default 0,
+  file_path text,
+  file_name text,
+  file_size bigint,
+  mime_type text,
+  fingerprint text not null unique,
+  origin text not null default 'nhap_tay',
+  notes text,
+  created_by uuid default auth.uid(),
+  discovered_at timestamptz not null default now(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index idx_kt_documents_review on public.kt_documents(review_status);
+create index idx_kt_documents_discovered on public.kt_documents(discovered_at desc);
+create index idx_kt_documents_type on public.kt_documents(doc_type_id);
+create index idx_kt_documents_group on public.kt_documents(topic_group_id);
+
+create table public.kt_document_keywords (
+  document_id uuid not null references public.kt_documents(id) on delete cascade,
+  keyword_id uuid not null references public.kt_keywords(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (document_id, keyword_id)
+);
+
+create table public.kt_articles (
+  id uuid primary key default gen_random_uuid(),
+  document_id uuid references public.kt_documents(id) on delete set null,
+  title text not null,
+  slug text not null unique,
+  meta_description text,
+  content_md text not null default '',
+  article_type text not null default 'huong-dan',
+  word_count integer not null default 0,
+  status text not null default 'nhap',
+  validation_note text,
+  origin text not null default 'thu_cong',
+  published_file boolean not null default false,
+  created_by uuid default auth.uid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index idx_kt_articles_status on public.kt_articles(status);
+create index idx_kt_articles_document on public.kt_articles(document_id);
+
+create table public.kt_article_keywords (
+  article_id uuid not null references public.kt_articles(id) on delete cascade,
+  keyword_id uuid not null references public.kt_keywords(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (article_id, keyword_id)
+);
+
+create trigger trg_kt_documents_updated_at before update on public.kt_documents
+  for each row execute function public.kt_set_updated_at();
+
+create trigger trg_kt_articles_updated_at before update on public.kt_articles
+  for each row execute function public.kt_set_updated_at();
+
+alter table public.kt_documents enable row level security;
+alter table public.kt_document_keywords enable row level security;
+alter table public.kt_articles enable row level security;
+alter table public.kt_article_keywords enable row level security;
+
+create policy kt_documents_all on public.kt_documents
+  for all to authenticated using (true) with check (true);
+
+create policy kt_document_keywords_all on public.kt_document_keywords
+  for all to authenticated using (true) with check (true);
+
+create policy kt_articles_all on public.kt_articles
+  for all to authenticated using (true) with check (true);
+
+create policy kt_article_keywords_all on public.kt_article_keywords
+  for all to authenticated using (true) with check (true);
+
+create table public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  full_name text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.profiles enable row level security;
+
+create policy profiles_select on public.profiles
+  for select to authenticated using (true);
+
+create policy profiles_insert_own on public.profiles
+  for insert to authenticated with check (auth.uid() = id);
+
+create policy profiles_update_own on public.profiles
+  for update to authenticated using (auth.uid() = id) with check (auth.uid() = id);
+
+create trigger trg_profiles_updated_at before update on public.profiles
+  for each row execute function public.kt_set_updated_at();
+
+create or replace function public.kt_handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, email, full_name)
+  values (new.id, new.email, coalesce(new.raw_user_meta_data->>'full_name', ''))
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.kt_handle_new_user();

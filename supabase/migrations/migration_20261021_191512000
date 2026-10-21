@@ -1,0 +1,94 @@
+-- KT Writer PRO: danh mục, từ khóa, nguồn cào (database trống, không có đối tượng trùng lặp)
+
+create or replace function public.kt_set_updated_at()
+returns trigger
+language plpgsql
+set search_path = public
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+create table public.kt_doc_types (
+  id uuid primary key default gen_random_uuid(),
+  code text not null unique,
+  name text not null,
+  doc_group text not null default 'khac',
+  sort_order integer not null default 0,
+  is_active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+create table public.kt_topic_groups (
+  id uuid primary key default gen_random_uuid(),
+  code text not null unique,
+  name text not null,
+  description text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create table public.kt_sources (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  base_url text,
+  index_url text,
+  link_filter text,
+  doc_group text not null default 'khac',
+  is_active boolean not null default false,
+  last_crawled_at timestamptz,
+  last_crawl_status text,
+  last_crawl_new_count integer not null default 0,
+  last_crawl_error text,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table public.kt_keywords (
+  id uuid primary key default gen_random_uuid(),
+  term text not null,
+  topic_group_id uuid references public.kt_topic_groups(id) on delete set null,
+  keyword_type text not null default 'primary',
+  trend_flag text not null default 'on_dinh',
+  priority integer not null default 3,
+  monthly_searches integer,
+  status text not null default 'active',
+  notes text,
+  origin text not null default 'thu_cong',
+  created_by uuid default auth.uid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create unique index kt_keywords_term_group_uidx
+  on public.kt_keywords (lower(term), coalesce(topic_group_id, '00000000-0000-0000-0000-000000000000'::uuid));
+
+create index idx_kt_keywords_status on public.kt_keywords(status);
+create index idx_kt_keywords_group on public.kt_keywords(topic_group_id);
+create index idx_kt_sources_active on public.kt_sources(is_active);
+
+create trigger trg_kt_sources_updated_at before update on public.kt_sources
+  for each row execute function public.kt_set_updated_at();
+
+create trigger trg_kt_keywords_updated_at before update on public.kt_keywords
+  for each row execute function public.kt_set_updated_at();
+
+alter table public.kt_doc_types enable row level security;
+alter table public.kt_topic_groups enable row level security;
+alter table public.kt_sources enable row level security;
+alter table public.kt_keywords enable row level security;
+
+create policy kt_doc_types_all on public.kt_doc_types
+  for all to authenticated using (true) with check (true);
+
+create policy kt_topic_groups_all on public.kt_topic_groups
+  for all to authenticated using (true) with check (true);
+
+create policy kt_sources_all on public.kt_sources
+  for all to authenticated using (true) with check (true);
+
+create policy kt_keywords_all on public.kt_keywords
+  for all to authenticated using (true) with check (true);
