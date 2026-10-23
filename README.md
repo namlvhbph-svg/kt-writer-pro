@@ -1,5 +1,12 @@
 # Welcome to your Enter project
 
+## KT Writer PRO: thu thập nguồn và sản xuất nội dung
+
+- [Bộ quét vào kho, không cần API AI](CRAWLER_SETUP.md)
+- [Cấu hình xưởng tạo bài AI](PRODUCTION_SETUP.md)
+
+Kho tài liệu hỗ trợ các nguồn Kế toán, Thuế, Tài chính và Tin nóng. Chọn nhóm ở cấu hình nguồn; quét từng đợt nhỏ và bấm tiếp tục để thu thập thêm. Người dùng kiểm tra nội dung và hiệu lực trước khi dùng làm căn cứ bài viết.
+
 [![Built with enter.pro](https://img.shields.io/badge/Build%20with-Enter.pro-FC5776?style=for-the-badge&labelColor=1F1F1F)](https://enter.pro)
 
 *Automatically synced with your [enter.pro](https://enter.pro) workspace* 

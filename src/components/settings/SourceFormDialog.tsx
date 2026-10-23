@@ -80,6 +80,15 @@ export default function SourceFormDialog({ open, onOpenChange, source }: Props) 
       toast.error("Nguồn đang bật cần có URL trang danh mục để cào.");
       return;
     }
+    try {
+      for (const value of [form.baseUrl.trim(), form.indexUrl.trim()].filter(Boolean)) {
+        const url = new URL(value);
+        if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) throw new Error();
+      }
+    } catch {
+      toast.error("URL nguồn phải là địa chỉ HTTP/HTTPS đầy đủ, không chứa thông tin đăng nhập.");
+      return;
+    }
 
     try {
       await saveSource.mutateAsync({
@@ -105,8 +114,8 @@ export default function SourceFormDialog({ open, onOpenChange, source }: Props) 
         <DialogHeader>
           <DialogTitle>{source ? "Cập nhật nguồn dữ liệu" : "Thêm nguồn dữ liệu"}</DialogTitle>
           <DialogDescription>
-            Hệ thống tải trang danh mục, lọc các liên kết chứa chuỗi nhận dạng, rồi lấy toàn văn
-            từng văn bản vào kho. Hãy chắc chắn URL thuộc trang công khai.
+            Thu thập nội dung HTML công khai theo từng đợt nhỏ, không cần API AI.
+            Chọn nhóm Kế toán, Thuế, Tài chính hoặc Tin nóng để phân loại tài liệu vào kho.
           </DialogDescription>
         </DialogHeader>
 
@@ -130,13 +139,14 @@ export default function SourceFormDialog({ open, onOpenChange, source }: Props) 
               </Label>
               <Input
                 id="source-base"
+              type="url"
                 value={form.baseUrl}
                 onChange={(event) => patch({ baseUrl: event.target.value })}
                 placeholder="https://www.mof.gov.vn"
               />
             </div>
             <SelectField
-              label="Nhóm văn bản"
+              label="Nhóm nội dung nguồn"
               value={form.docGroup}
               onChange={(value) => patch({ docGroup: value })}
               options={DOC_GROUPS}
@@ -149,13 +159,14 @@ export default function SourceFormDialog({ open, onOpenChange, source }: Props) 
             </Label>
             <Input
               id="source-index"
+              type="url"
               value={form.indexUrl}
               onChange={(event) => patch({ indexUrl: event.target.value })}
               placeholder="https://ktkt.uel.edu.vn/chuan-muc-ke-toan-viet-nam-vas2"
             />
             <p className="text-xs text-muted-foreground">
-              Ví dụ với nguồn UEL: URL danh mục chuẩn mực kế toán và chuỗi nhận dạng{" "}
-              <code className="rounded bg-muted px-1">chuan-muc-</code>.
+              Dùng URL chuyên mục chứa các bài cần thu thập. Bộ quét chỉ theo liên kết
+              cùng tên miền, tối đa 100 bài trong danh sách mỗi vòng; không hỗ trợ trang chỉ tải nội dung bằng JavaScript.
             </p>
           </div>
 

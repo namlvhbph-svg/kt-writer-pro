@@ -79,11 +79,11 @@ export default function Documents() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Kho văn bản pháp luật"
-        description="Nơi lưu toàn văn các văn bản kế toán – thuế làm ngữ cảnh cho việc biên tập nội dung về sau."
+        title="Kho tài liệu & tin tức"
+        description="Lưu nguồn kế toán, thuế, tài chính và tin nóng trước khi viết bài. Quét nguồn không cần API AI."
         icon={Library}
       >
-        <CrawlNowButton label="Quét nguồn tự động" variant="outline" />
+        <CrawlNowButton label="Quét nguồn (đợt nhỏ)" variant="outline" />
         <Button variant="outline" onClick={() => setUploadOpen(true)}>
           <FileUp className="mr-1.5 h-4 w-4" />
           Tải file lên

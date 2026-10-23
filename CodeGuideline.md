@@ -2,6 +2,10 @@
 
 ## Content production modules
 
+- `supabase/functions/kt-crawl-sources/scraper.ts`: bounded detail-link discovery, article body extraction, dates, editorial groups and resumable snapshot validation.
+- `supabase/functions/kt-crawl-sources/network.ts`: bounded HTML downloads with same-origin redirects and timeouts.
+- `tests/crawler.test.mjs`: offline HTML extraction, filtering, cursor and network regression cases (`npm run test:crawler`).
+
 - `src/pages/production/index.tsx`: source-backed AI brief, editable draft preview, quality checklist and save to the existing article workflow.
 - `src/lib/content-production.ts`: four editorial desks and structural content checks.
 - `supabase/functions/kt-generate-article/index.ts`: authenticated server-side AI generation using OpenAI Responses; secrets stay on the server.

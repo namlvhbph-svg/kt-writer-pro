@@ -42,7 +42,7 @@ const NAV_ITEMS = [
   { to: "/", label: "Tổng quan", icon: BarChart3, match: (path: string) => path === "/" },
   {
     to: "/documents",
-    label: "Văn bản pháp luật",
+    label: "Kho tài liệu & tin tức",
     icon: Library,
     match: (path: string) => path.startsWith("/documents"),
   },
@@ -70,7 +70,7 @@ function pageTitleOf(pathname: string): string {
   if (pathname.startsWith("/production")) return "Xưởng sản xuất nội dung";
   if (pathname === "/") return "Tổng quan";
   if (pathname.startsWith("/documents")) {
-    return pathname === "/documents" ? "Văn bản pháp luật" : "Chi tiết văn bản";
+    return pathname === "/documents" ? "Kho tài liệu & tin tức" : "Chi tiết tài liệu";
   }
   if (pathname.startsWith("/keywords")) return "Từ khóa & Chủ đề";
   if (pathname.startsWith("/articles")) {

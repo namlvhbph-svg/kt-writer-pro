@@ -26,16 +26,16 @@ export default function CrawlNowButton({
 
       if (result.inserted > 0) {
         toast.success(
-          `Đã thêm ${result.inserted} văn bản mới vào kho (bỏ qua ${result.skipped} văn bản đã có).`,
+          `${result.source_name ?? "Quét nguồn"}: đã thêm ${result.inserted} tài liệu; ${result.duplicates ?? 0} trùng, ${result.rejected ?? 0} trang bị loại hoặc tải lỗi.`,
         );
       } else {
         toast.info(
-          `Không có văn bản mới. Đã kiểm tra ${result.fetched} trang, bỏ qua ${result.skipped} văn bản đã có trong kho.`,
+          `${result.source_name ?? "Quét nguồn"}: chưa thêm tài liệu. Đã tải ${result.fetched} trang; ${result.duplicates ?? 0} trùng, ${result.rejected ?? 0} trang bị loại hoặc tải lỗi.`,
         );
       }
 
       if (result.truncated) {
-        toast.info("Tiến trình chưa quét hết danh sách. Hãy bấm Quét ngay lần nữa để cào tiếp.");
+        toast.info("Đã lưu vị trí quét trong tab này. Bấm Quét ngay lần nữa để xử lý đợt tiếp theo (tối đa 2 bài mỗi đợt).");
       }
 
       if (result.errors && result.errors.length > 0) {
