@@ -14,7 +14,385 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+    kt_doc_types: {
+      Row: {
+        id: string;
+        code: string;
+        name: string;
+        doc_group: string;
+        sort_order: number;
+        is_active: boolean;
+        created_at: string;
+      };
+      Insert: {
+        id?: string;
+        code: string;
+        name: string;
+        doc_group?: string;
+        sort_order?: number;
+        is_active?: boolean;
+        created_at?: string;
+      };
+      Update: {
+        id?: string;
+        code?: string;
+        name?: string;
+        doc_group?: string;
+        sort_order?: number;
+        is_active?: boolean;
+        created_at?: string;
+      };
+      Relationships: [
+
+      ];
+    };
+    kt_topic_groups: {
+      Row: {
+        id: string;
+        code: string;
+        name: string;
+        description: string | null;
+        sort_order: number;
+        created_at: string;
+      };
+      Insert: {
+        id?: string;
+        code: string;
+        name: string;
+        description?: string | null;
+        sort_order?: number;
+        created_at?: string;
+      };
+      Update: {
+        id?: string;
+        code?: string;
+        name?: string;
+        description?: string | null;
+        sort_order?: number;
+        created_at?: string;
+      };
+      Relationships: [
+
+      ];
+    };
+    kt_sources: {
+      Row: {
+        id: string;
+        name: string;
+        base_url: string | null;
+        index_url: string | null;
+        link_filter: string | null;
+        doc_group: string;
+        is_active: boolean;
+        last_crawled_at: string | null;
+        last_crawl_status: string | null;
+        last_crawl_new_count: number;
+        last_crawl_error: string | null;
+        notes: string | null;
+        created_at: string;
+        updated_at: string;
+      };
+      Insert: {
+        id?: string;
+        name: string;
+        base_url?: string | null;
+        index_url?: string | null;
+        link_filter?: string | null;
+        doc_group?: string;
+        is_active?: boolean;
+        last_crawled_at?: string | null;
+        last_crawl_status?: string | null;
+        last_crawl_new_count?: number;
+        last_crawl_error?: string | null;
+        notes?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Update: {
+        id?: string;
+        name?: string;
+        base_url?: string | null;
+        index_url?: string | null;
+        link_filter?: string | null;
+        doc_group?: string;
+        is_active?: boolean;
+        last_crawled_at?: string | null;
+        last_crawl_status?: string | null;
+        last_crawl_new_count?: number;
+        last_crawl_error?: string | null;
+        notes?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Relationships: [
+
+      ];
+    };
+    kt_keywords: {
+      Row: {
+        id: string;
+        term: string;
+        topic_group_id: string | null;
+        keyword_type: string;
+        trend_flag: string;
+        priority: number;
+        monthly_searches: number | null;
+        status: string;
+        notes: string | null;
+        origin: string;
+        created_by: string | null;
+        created_at: string;
+        updated_at: string;
+      };
+      Insert: {
+        id?: string;
+        term: string;
+        topic_group_id?: string | null;
+        keyword_type?: string;
+        trend_flag?: string;
+        priority?: number;
+        monthly_searches?: number | null;
+        status?: string;
+        notes?: string | null;
+        origin?: string;
+        created_by?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Update: {
+        id?: string;
+        term?: string;
+        topic_group_id?: string | null;
+        keyword_type?: string;
+        trend_flag?: string;
+        priority?: number;
+        monthly_searches?: number | null;
+        status?: string;
+        notes?: string | null;
+        origin?: string;
+        created_by?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Relationships: [
+        { foreignKeyName: "kt_keywords_topic_group_id_fkey"; columns: ["topic_group_id"]; isOneToOne: false; referencedRelation: "kt_topic_groups"; referencedColumns: ["id"] }
+      ];
+    };
+    kt_documents: {
+      Row: {
+        id: string;
+        title: string;
+        doc_number: string | null;
+        doc_type_id: string | null;
+        topic_group_id: string | null;
+        source_id: string | null;
+        issuing_body: string | null;
+        issued_date: string | null;
+        effective_date: string | null;
+        expiry_date: string | null;
+        legal_status: string;
+        review_status: string;
+        original_url: string | null;
+        raw_text: string;
+        char_count: number;
+        file_path: string | null;
+        file_name: string | null;
+        file_size: number | null;
+        mime_type: string | null;
+        fingerprint: string;
+        origin: string;
+        notes: string | null;
+        created_by: string | null;
+        discovered_at: string;
+        created_at: string;
+        updated_at: string;
+      };
+      Insert: {
+        id?: string;
+        title: string;
+        doc_number?: string | null;
+        doc_type_id?: string | null;
+        topic_group_id?: string | null;
+        source_id?: string | null;
+        issuing_body?: string | null;
+        issued_date?: string | null;
+        effective_date?: string | null;
+        expiry_date?: string | null;
+        legal_status?: string;
+        review_status?: string;
+        original_url?: string | null;
+        raw_text?: string;
+        char_count?: number;
+        file_path?: string | null;
+        file_name?: string | null;
+        file_size?: number | null;
+        mime_type?: string | null;
+        fingerprint: string;
+        origin?: string;
+        notes?: string | null;
+        created_by?: string | null;
+        discovered_at?: string;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Update: {
+        id?: string;
+        title?: string;
+        doc_number?: string | null;
+        doc_type_id?: string | null;
+        topic_group_id?: string | null;
+        source_id?: string | null;
+        issuing_body?: string | null;
+        issued_date?: string | null;
+        effective_date?: string | null;
+        expiry_date?: string | null;
+        legal_status?: string;
+        review_status?: string;
+        original_url?: string | null;
+        raw_text?: string;
+        char_count?: number;
+        file_path?: string | null;
+        file_name?: string | null;
+        file_size?: number | null;
+        mime_type?: string | null;
+        fingerprint?: string;
+        origin?: string;
+        notes?: string | null;
+        created_by?: string | null;
+        discovered_at?: string;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Relationships: [
+        { foreignKeyName: "kt_documents_doc_type_id_fkey"; columns: ["doc_type_id"]; isOneToOne: false; referencedRelation: "kt_doc_types"; referencedColumns: ["id"] },
+        { foreignKeyName: "kt_documents_topic_group_id_fkey"; columns: ["topic_group_id"]; isOneToOne: false; referencedRelation: "kt_topic_groups"; referencedColumns: ["id"] },
+        { foreignKeyName: "kt_documents_source_id_fkey"; columns: ["source_id"]; isOneToOne: false; referencedRelation: "kt_sources"; referencedColumns: ["id"] }
+      ];
+    };
+    kt_document_keywords: {
+      Row: {
+        document_id: string;
+        keyword_id: string;
+        created_at: string;
+      };
+      Insert: {
+        document_id: string;
+        keyword_id: string;
+        created_at?: string;
+      };
+      Update: {
+        document_id?: string;
+        keyword_id?: string;
+        created_at?: string;
+      };
+      Relationships: [
+        { foreignKeyName: "kt_document_keywords_document_id_fkey"; columns: ["document_id"]; isOneToOne: false; referencedRelation: "kt_documents"; referencedColumns: ["id"] },
+        { foreignKeyName: "kt_document_keywords_keyword_id_fkey"; columns: ["keyword_id"]; isOneToOne: false; referencedRelation: "kt_keywords"; referencedColumns: ["id"] }
+      ];
+    };
+    kt_articles: {
+      Row: {
+        id: string;
+        document_id: string | null;
+        title: string;
+        slug: string;
+        meta_description: string | null;
+        content_md: string;
+        article_type: string;
+        word_count: number;
+        status: string;
+        validation_note: string | null;
+        origin: string;
+        published_file: boolean;
+        created_by: string | null;
+        created_at: string;
+        updated_at: string;
+      };
+      Insert: {
+        id?: string;
+        document_id?: string | null;
+        title: string;
+        slug: string;
+        meta_description?: string | null;
+        content_md?: string;
+        article_type?: string;
+        word_count?: number;
+        status?: string;
+        validation_note?: string | null;
+        origin?: string;
+        published_file?: boolean;
+        created_by?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Update: {
+        id?: string;
+        document_id?: string | null;
+        title?: string;
+        slug?: string;
+        meta_description?: string | null;
+        content_md?: string;
+        article_type?: string;
+        word_count?: number;
+        status?: string;
+        validation_note?: string | null;
+        origin?: string;
+        published_file?: boolean;
+        created_by?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Relationships: [
+        { foreignKeyName: "kt_articles_document_id_fkey"; columns: ["document_id"]; isOneToOne: false; referencedRelation: "kt_documents"; referencedColumns: ["id"] }
+      ];
+    };
+    kt_article_keywords: {
+      Row: {
+        article_id: string;
+        keyword_id: string;
+        created_at: string;
+      };
+      Insert: {
+        article_id: string;
+        keyword_id: string;
+        created_at?: string;
+      };
+      Update: {
+        article_id?: string;
+        keyword_id?: string;
+        created_at?: string;
+      };
+      Relationships: [
+        { foreignKeyName: "kt_article_keywords_article_id_fkey"; columns: ["article_id"]; isOneToOne: false; referencedRelation: "kt_articles"; referencedColumns: ["id"] },
+        { foreignKeyName: "kt_article_keywords_keyword_id_fkey"; columns: ["keyword_id"]; isOneToOne: false; referencedRelation: "kt_keywords"; referencedColumns: ["id"] }
+      ];
+    };
+    profiles: {
+      Row: {
+        id: string;
+        email: string | null;
+        full_name: string | null;
+        created_at: string;
+        updated_at: string;
+      };
+      Insert: {
+        id: string;
+        email?: string | null;
+        full_name?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Update: {
+        id?: string;
+        email?: string | null;
+        full_name?: string | null;
+        created_at?: string;
+        updated_at?: string;
+      };
+      Relationships: [
+
+      ];
+    };
     }
     Views: {
       [_ in never]: never

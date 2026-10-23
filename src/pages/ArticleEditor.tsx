@@ -50,7 +50,6 @@ export default function ArticleEditor() {
   const { data: article, isLoading, isError, error } = useArticle(id);
   const { data: allKeywords = [] } = useActiveKeywords();
   const { data: documentsData } = useDocuments({ page: 1, pageSize: 100 });
-  const { data: sourceDocument } = useDocument(article?.document_id ?? undefined);
   const updateArticle = useUpdateArticle();
   const setKeywords = useSetArticleKeywords();
   const deleteArticle = useDeleteArticle();
@@ -65,6 +64,7 @@ export default function ArticleEditor() {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const { data: sourceDocument } = useDocument(documentId || undefined);
 
   useEffect(() => {
     if (!article) return;
@@ -280,6 +280,7 @@ export default function ArticleEditor() {
         </div>
 
         <div className="space-y-6">
+          {article.validation_note && <Card><CardHeader><CardTitle className="text-base">Ghi chú kiểm duyệt</CardTitle></CardHeader><CardContent><p className="whitespace-pre-wrap text-sm text-muted-foreground">{article.validation_note}</p></CardContent></Card>}
           <Card className="card-shadow">
             <CardHeader className="flex-row items-center justify-between space-y-0">
               <CardTitle className="text-base">Trạng thái duyệt</CardTitle>

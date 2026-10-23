@@ -48,15 +48,15 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Tổng quan kho dữ liệu"
+        title="Trung tâm sản xuất nội dung"
         description="Bức tranh nhanh về văn bản pháp luật, từ khóa chủ đề và bài viết đang được đội ngũ nội dung khai thác."
         icon={BarChart3}
       >
         <CrawlNowButton label="Quét nguồn tự động" variant="outline" />
         <Button asChild>
-          <Link to="/documents">
+          <Link to="/production">
             <Library className="mr-1.5 h-4 w-4" />
-            Vào kho văn bản
+            Sản xuất bài viết
           </Link>
         </Button>
       </PageHeader>

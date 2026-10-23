@@ -9,6 +9,7 @@ import Keywords from "./pages/Keywords";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
+import Production from "./pages/production";
 
 export const routers = [
   {
@@ -26,6 +27,7 @@ export const routers = [
     ),
     children: [
       { index: true, name: "dashboard", element: <Dashboard /> },
+      { path: "production", name: "production", element: <Production /> },
       { path: "documents", name: "documents", element: <Documents /> },
       { path: "documents/:id", name: "document-detail", element: <DocumentDetail /> },
       { path: "keywords", name: "keywords", element: <Keywords /> },

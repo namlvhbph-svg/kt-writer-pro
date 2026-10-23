@@ -3,6 +3,7 @@ import {
   BarChart3,
   ChevronRight,
   FileText,
+  Factory,
   Library,
   LogOut,
   Settings,
@@ -37,6 +38,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 
 const NAV_ITEMS = [
+  { to: "/production", label: "Xưởng sản xuất nội dung", icon: Factory, match: (path: string) => path.startsWith("/production") },
   { to: "/", label: "Tổng quan", icon: BarChart3, match: (path: string) => path === "/" },
   {
     to: "/documents",
@@ -65,6 +67,7 @@ const NAV_ITEMS = [
 ];
 
 function pageTitleOf(pathname: string): string {
+  if (pathname.startsWith("/production")) return "Xưởng sản xuất nội dung";
   if (pathname === "/") return "Tổng quan";
   if (pathname.startsWith("/documents")) {
     return pathname === "/documents" ? "Văn bản pháp luật" : "Chi tiết văn bản";
@@ -97,7 +100,7 @@ export default function AppLayout() {
                 KT Writer PRO
               </p>
               <p className="truncate text-[11px] text-sidebar-foreground/60">
-                Kho dữ liệu kế toán &amp; thuế
+                Kế toán · Thuế · Tài chính · Tin nóng
               </p>
             </div>
           </div>
@@ -129,11 +132,10 @@ export default function AppLayout() {
         <SidebarFooter>
           <div className="rounded-lg bg-sidebar-accent/60 p-3 group-data-[collapsible=icon]:hidden">
             <p className="text-[11px] font-medium uppercase tracking-wide text-sidebar-foreground/60">
-              Giai đoạn hiện tại
+              Quy trình nội dung
             </p>
             <p className="mt-1 text-xs leading-relaxed text-sidebar-foreground/80">
-              Kho dữ liệu &amp; dashboard. Sinh bài bằng AI, kiểm duyệt và đăng đa kênh sẽ bổ sung ở
-              giai đoạn sau.
+              Chọn nguồn → tạo nháp AI → biên tập → kiểm duyệt → xuất nội dung.
             </p>
           </div>
         </SidebarFooter>

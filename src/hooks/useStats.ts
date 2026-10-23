@@ -52,7 +52,18 @@ type CountFilter = {
 };
 
 async function countOf(table: CountedTable, filters: CountFilter[] = []): Promise<number> {
-  let query = supabase.from(table).select("id", { count: "exact", head: true });
+  // Select each concrete table before sharing filters to avoid recursive union inference.
+  type CountQuery = PromiseLike<{ count: number | null; error: { message: string } | null }> & {
+    eq: (column: string, value: string) => CountQuery;
+    gte: (column: string, value: string) => CountQuery;
+    lt: (column: string, value: string) => CountQuery;
+  };
+  const options = { count: "exact" as const, head: true };
+  let query = (table === "kt_documents"
+    ? supabase.from("kt_documents").select("id", options)
+    : table === "kt_keywords"
+      ? supabase.from("kt_keywords").select("id", options)
+      : supabase.from("kt_articles").select("id", options)) as unknown as CountQuery;
   for (const filter of filters) {
     if (filter.op === "eq") {
       query = query.eq(filter.column, filter.value);

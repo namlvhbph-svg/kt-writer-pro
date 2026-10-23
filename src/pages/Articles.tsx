@@ -122,6 +122,9 @@ export default function Articles() {
         description="Nơi soạn, biên tập và theo dõi trạng thái duyệt của từng bài viết trước khi xuất bản."
         icon={FileText}
       >
+        <Button variant="outline" onClick={() => navigate("/production")}>
+          Mở xưởng sản xuất AI
+        </Button>
         <Button onClick={() => setFormOpen(true)}>
           <Plus className="mr-1.5 h-4 w-4" />
           Tạo bài viết
@@ -203,7 +206,7 @@ export default function Articles() {
           <EmptyState
             icon={FileText}
             title="Chưa có bài viết nào khớp điều kiện"
-            description="Tạo bài viết mới, gắn văn bản nguồn và từ khóa chủ đề. Tính năng sinh bài tự động bằng AI sẽ được bổ sung ở giai đoạn sau."
+            description="Mở xưởng sản xuất AI để viết từ nguồn tài liệu hoặc tạo bài thủ công, sau đó biên tập và kiểm duyệt."
             action={
               <Button onClick={() => setFormOpen(true)}>
                 <Plus className="mr-1.5 h-4 w-4" />

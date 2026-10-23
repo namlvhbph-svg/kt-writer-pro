@@ -1,5 +1,14 @@
 # Code Guideline
 
+## Content production modules
+
+- `src/pages/production/index.tsx`: source-backed AI brief, editable draft preview, quality checklist and save to the existing article workflow.
+- `src/lib/content-production.ts`: four editorial desks and structural content checks.
+- `supabase/functions/kt-generate-article/index.ts`: authenticated server-side AI generation using OpenAI Responses; secrets stay on the server.
+- `supabase/functions/kt-generate-article/contract.ts`: request, news freshness and response validation.
+- `src/integrations/supabase/types.ts`: database types matching the repository migrations.
+- `tests/production.test.mjs`: generation validation, freshness boundaries and quality-check regression tests (`npm run test:production`, Node 22.6+).
+
 ## Project Structure Overview
 
 ```

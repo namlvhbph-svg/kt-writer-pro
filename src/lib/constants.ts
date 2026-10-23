@@ -4,6 +4,8 @@ export type Option = { value: string; label: string; tone?: Tone };
 
 /** Nhóm văn bản – dùng cho kt_doc_types.doc_group và kt_sources.doc_group */
 export const DOC_GROUPS: Option[] = [
+  { value: "tai_chinh", label: "Tài chính", tone: "success" },
+  { value: "tin_hot", label: "Tin nóng", tone: "danger" },
   { value: "ke_toan", label: "Kế toán", tone: "primary" },
   { value: "thue", label: "Thuế", tone: "info" },
   { value: "bhxh", label: "BHXH – BHYT – BHTN", tone: "warning" },
@@ -35,6 +37,7 @@ export const DOC_ORIGINS: Option[] = [
 
 /** Loại bài viết – giữ nguyên ARTICLE_TYPES trong main.py */
 export const ARTICLE_TYPES: Option[] = [
+  { value: "tin-nong", label: "Bản tin thời sự" },
   { value: "huong-dan", label: "Hướng dẫn thực hành" },
   { value: "tom-tat", label: "Tóm tắt dễ hiểu" },
   { value: "so-sanh", label: "So sánh với IFRS" },
